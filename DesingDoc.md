@@ -84,6 +84,32 @@ Los propietarios podrán reportar problemas (como persianas rotas o duchas que n
 
 ### Fase 1: Configuración del Proyecto
 
+#### Instalación de Flutter y Configuración Inicial
+
+1. Instala Flutter siguiendo la guía oficial en [flutter.dev](https://flutter.dev/docs/get-started/install).
+2. Verifica la instalación con:
+   ```bash
+   flutter doctor
+   ```
+3. Crea un nuevo proyecto Flutter:
+   ```bash
+   flutter create RealStateManager
+   cd RealStateManager
+   ```
+4. Instala las dependencias necesarias en `pubspec.yaml`:
+   ```yaml
+   dependencies:
+     flutter:
+       sdk: flutter
+     appwrite: ^10.0.0 # Versión más reciente
+   ```
+5. Ejecuta el proyecto para comprobar que funciona correctamente:
+   ```bash
+   flutter run
+   ```
+
+### Configuración de Appwrite
+
 1. Configura un proyecto en Appwrite.
 2. Crea las colecciones necesarias:
    - **Usuarios**: Para almacenar los roles y datos básicos.
@@ -157,3 +183,4 @@ realtime.subscribe(['collections.INCIDENCIAS.documents'], (response) {
   print('Notificación: ${response.payload}');
 });
 ```
+
