@@ -1,6 +1,6 @@
 # Gestión de Incidencias - Aplicación Multiplataforma
 
-Este proyecto es una aplicación multiplataforma desarrollada con **React Native** y **Appwrite**, diseñada para simplificar la comunicación entre propietarios de pisos y empresas de mantenimiento. Los propietarios pueden reportar incidencias (como problemas con persianas o duchas) y las empresas pueden gestionar estas incidencias, proporcionando respuestas y actualizando su estado.
+Este proyecto es una aplicación multiplataforma desarrollada con **Flutter** y **Appwrite**, diseñada para simplificar la comunicación entre propietarios de pisos y empresas de mantenimiento. Los propietarios pueden reportar incidencias (como problemas con persianas o duchas) y las empresas pueden gestionar estas incidencias, proporcionando respuestas y actualizando su estado.
 
 ---
 
@@ -21,9 +21,8 @@ Este proyecto es una aplicación multiplataforma desarrollada con **React Native
 
 ## Tecnologías Utilizadas
 ### Frontend:
-- **React Native**: Desarrollo multiplataforma eficiente.
-- **Expo**: Configuración inicial rápida y herramientas preconfiguradas.
-- **TypeScript**: Tipado estático para mayor robustez y escalabilidad.
+- **Flutter**: Desarrollo multiplataforma eficiente con una interfaz nativa.
+- **Dart**: Lenguaje de programación optimizado para aplicaciones móviles.
 
 ### Backend:
 - **Appwrite**: Plataforma para gestionar autenticación, base de datos, almacenamiento de archivos y notificaciones en tiempo real.
@@ -35,22 +34,18 @@ Este proyecto es una aplicación multiplataforma desarrollada con **React Native
 
 ## Configuración del Proyecto
 ### 1. Requisitos previos
-- Node.js y npm instalados.
+- Flutter instalado en tu sistema. Puedes seguir la guía de instalación en [flutter.dev](https://flutter.dev/docs/get-started/install).
 - Docker instalado (si planeas usar Appwrite localmente).
-- Expo CLI instalada:
-  ```bash
-  npm install -g expo-cli
-  ```
 
 ### 2. Instalación
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/usuario/proyecto-gestion-incidencias.git
-   cd proyecto-gestion-incidencias
+   git clone https://github.com/usuario/RealStateManager.git
+   cd RealStateManager
    ```
 2. Instala las dependencias:
    ```bash
-   npm install
+   flutter pub get
    ```
 3. Configura el proyecto en Appwrite:
    - Crea un nuevo proyecto en el panel de control de Appwrite.
@@ -66,18 +61,20 @@ Este proyecto es una aplicación multiplataforma desarrollada con **React Native
 
 5. Inicia el proyecto:
    ```bash
-   expo start
+   flutter run
    ```
 
 ---
 
 ## Estructura del Proyecto
 ```plaintext
-├── App.tsx            # Archivo principal de la app.
-├── components/        # Componentes reutilizables.
-├── screens/           # Pantallas principales (login, incidencias, etc.).
-├── services/          # Lógica para interactuar con Appwrite.
-├── utils/             # Utilidades y helpers.
+├── lib/	            # Código fuente principal de la app.
+│   ├── main.dart	    # Archivo principal de la aplicación.
+│   ├── components/    # Componentes reutilizables.
+│   ├── screens/       # Pantallas principales (login, incidencias, etc.).
+│   ├── services/      # Lógica para interactuar con Appwrite.
+│   ├── utils/         # Utilidades y helpers.
+├── assets/            # Recursos como imágenes y fuentes.
 └── README.md          # Este archivo.
 ```
 
@@ -85,22 +82,34 @@ Este proyecto es una aplicación multiplataforma desarrollada con **React Native
 
 ## Ejemplo de Integración con Appwrite
 ### Registrar una incidencia
-```typescript
-import { Databases } from "appwrite";
+```dart
+import 'package:appwrite/appwrite.dart';
 
-const databases = new Databases(client);
-await databases.createDocument('DATABASE_ID', 'COLLECTION_ID', 'UNIQUE()', {
-  descripcion: "Ducha rota",
-  estado: "nueva",
-  propietario_id: "USER_ID",
-  empresa_id: "EMPRESA_ID",
-});
+final client = Client()
+  ..setEndpoint('http://localhost/v1')
+  ..setProject('your_project_id');
+
+final databases = Databases(client);
+
+await databases.createDocument(
+  databaseId: 'DATABASE_ID',
+  collectionId: 'COLLECTION_ID',
+  documentId: 'unique()',
+  data: {
+    'descripcion': "Ducha rota",
+    'estado': "nueva",
+    'propietario_id': "USER_ID",
+    'empresa_id': "EMPRESA_ID",
+  },
+);
 ```
 
 ### Notificaciones en tiempo real
-```typescript
-client.subscribe('collections.INCIDENCIAS.documents', (response) => {
-  console.log('Notificación:', response);
+```dart
+final realtime = Realtime(client);
+
+realtime.subscribe(['collections.INCIDENCIAS.documents'], (response) {
+  print('Notificación: ${response.payload}');
 });
 ```
 
